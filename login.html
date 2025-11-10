@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Хижина Кошмаров</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.9));
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(139, 0, 0, 0.2);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b0000;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.7);
+        }
+        
+        .logo-subtitle {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+        
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: #8b0000;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+            outline: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            color: #888;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(139, 0, 0, 0.3);
+        }
+        
+        .divider span {
+            background: linear-gradient(135deg, #0a0a0a, #1a0a0a);
+            padding: 0 15px;
+            position: relative;
+        }
+        
+        .register-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            background: rgba(139, 0, 0, 0.1);
+            border-color: #8b0000;
+        }
+        
+        .guest-btn {
+            width: 100%;
+            background: transparent;
+            color: #888;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .guest-btn:hover {
+            color: #e0e0e0;
+            border-color: #8b0000;
+        }
+        
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-message {
+            color: #00ff00;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <div class="logo-text">Хижина<span style="color: #e0e0e0;">Кошмаров</span></div>
+                <div class="logo-subtitle">Войдите в свой аккаунт</div>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="email" placeholder="ваш@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-input" id="password" placeholder="••••••••" required>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    Неверный email или пароль
+                </div>
+                
+                <div class="success-message" id="successMessage">
+                    Вход выполнен успешно!
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+            </form>
+            
+            <div class="divider">
+                <span>или</span>
+            </div>
+            
+            <button class="register-btn" id="showRegister">
+                <i class="fas fa-user-plus"></i> Создать аккаунт
+            </button>
+            
+            <button class="guest-btn" id="continueAsGuest">
+                <i class="fas fa-user"></i> Продолжить как гость
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Простая система пользователей
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        
+        // Если пользователь уже вошел, перенаправляем
+        if (currentUser) {
+            window.location.href = 'profile.html';
+        }
+        
+        // Обработка входа
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Проверяем пользователя
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Успешный вход
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1000);
+            } else {
+                // Ошибка входа
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        });
+        
+        // Регистрация
+        document.getElementById('showRegister').addEventListener('click', function() {
+            const email = prompt('Введите ваш email:');
+            if (!email) return;
+            
+            const password = prompt('Введите пароль:');
+            if (!password) return;
+            
+            const name = prompt('Введите ваше имя:');
+            if (!name) return;
+            
+            // Проверяем, нет ли уже такого email
+            if (users.find(u => u.email === email)) {
+                alert('Пользователь с таким email уже существует!');
+                return;
+            }
+            
+            // Создаем нового пользователя
+            const newUser = {
+                id: Date.now(),
+                email: email,
+                password: password,
+                name: name,
+                registrationDate: new Date().toLocaleDateString('ru-RU')
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            alert('Аккаунт успешно создан!');
+            window.location.href = 'profile.html';
+        });
+        
+        // Продолжить как гость
+        document.getElementById('continueAsGuest').addEventListener('click', function() {
+            localStorage.setItem('currentUser', JSON.stringify({
+                name: 'Гость',
+                email: 'guest@example.com',
+                isGuest: true
+            }));
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
