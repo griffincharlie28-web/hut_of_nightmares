@@ -78,23 +78,6 @@
             transform: scale(1.1);
         }
         
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: linear-gradient(45deg, #8b0000, #ff0000);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.7rem;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(139, 0, 0, 0.5);
-        }
-        
         .profile-header {
             text-align: center;
             padding: 30px 0 20px;
@@ -337,44 +320,101 @@
             margin-right: 8px;
         }
         
-        .recent-activity {
-            margin-top: 25px;
+        /* Стили для просмотренных товаров */
+        .viewed-products {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
         }
         
-        .activity-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
+        .viewed-product {
             background: rgba(26, 26, 26, 0.5);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border-left: 3px solid #8b0000;
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
         
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(139, 0, 0, 0.2);
+        .viewed-product::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .viewed-product:hover::before {
+            left: 100%;
+        }
+        
+        .viewed-product:hover {
+            transform: translateY(-3px);
+            border-color: #8b0000;
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+        
+        .viewed-product-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
             border-radius: 10px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            margin-right: 15px;
+            align-items: center;
+            font-size: 1.5rem;
             color: #8b0000;
+            margin: 0 auto 10px;
+            border: 1px solid rgba(139, 0, 0, 0.3);
         }
         
-        .activity-info {
-            flex: 1;
-        }
-        
-        .activity-title {
-            font-weight: 500;
-            margin-bottom: 3px;
-        }
-        
-        .activity-time {
+        .viewed-product-title {
             font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            line-height: 1.2;
+            height: 32px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .viewed-product-price {
+            color: #8b0000;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .empty-viewed {
+            text-align: center;
+            padding: 30px 20px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-viewed i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #333;
+            opacity: 0.5;
+        }
+        
+        .empty-viewed h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
             color: #888;
+        }
+        
+        .empty-viewed p {
+            font-size: 0.8rem;
         }
         
         .bottom-nav {
@@ -430,66 +470,62 @@
         
         .profile-stats { animation-delay: 0.1s; }
         .menu-section { animation-delay: 0.2s; }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
     </style>
 </head>
 <body>
-   <header>
-    <div class="container">
-        <div class="header-content">
-            <div class="logo">Хижина<span>Кошмаров</span></div>
-            <div class="header-icons">
-                <button class="icon-btn">
-                    <i class="fas fa-search"></i>
-                </button>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Хижина<span>Кошмаров</span></div>
+                <div class="header-icons">
+                    <button class="icon-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
     
     <div class="container">
         <div class="profile-header">
             <div class="profile-avatar">
                 <i class="fas fa-user-secret"></i>
             </div>
-            <h2 class="profile-name">Алексей Кошмаров</h2>
-            <div class="profile-badge">Постоянный клиент</div>
-            <div class="profile-email">alexey@hut-of-nightmares.ru</div>
+            <h2 class="profile-name" id="userName">Алексей Кошмаров</h2>
+            <div class="profile-badge" id="userBadge">Постоянный клиент</div>
+            <div class="profile-email" id="userEmail">alexey@hut-of-nightmares.ru</div>
         </div>
         
         <div class="profile-stats">
             <div class="stat-card">
-                <div class="stat-number">12</div>
+                <div class="stat-number" id="ordersCount">0</div>
                 <div class="stat-label">Заказов</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">8</div>
+                <div class="stat-number" id="favoritesCount">0</div>
                 <div class="stat-label">Избранное</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">3</div>
+                <div class="stat-number" id="cartCount">0</div>
                 <div class="stat-label">Корзина</div>
             </div>
         </div>
         
-        <div class="recent-activity">
-            <h3 class="section-title">Последние действия</h3>
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fas fa-shopping-bag"></i>
-                </div>
-                <div class="activity-info">
-                    <div class="activity-title">Заказ #1245 доставлен</div>
-                    <div class="activity-time">2 часа назад</div>
-                </div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="activity-info">
-                    <div class="activity-title">Добавлен в избранное</div>
-                    <div class="activity-time">Вчера, 15:30</div>
-                </div>
+        <!-- Просмотренные товары -->
+        <div class="menu-section">
+            <h3 class="section-title">Недавно просмотренные</h3>
+            <div class="viewed-products" id="viewedProducts">
+                <!-- Товары будут загружаться динамически -->
             </div>
         </div>
         
@@ -499,7 +535,7 @@
                 <a href="#" class="menu-item">
                     <i class="fas fa-shopping-bag"></i>
                     <span>Мои заказы</span>
-                    <span class="badge">3 новых</span>
+                    <span class="badge" id="newOrdersCount">0 новых</span>
                     <i class="fas fa-chevron-right arrow"></i>
                 </a>
                 <a href="#" class="menu-item">
@@ -546,7 +582,7 @@
             </div>
         </div>
         
-        <button class="logout-btn">
+        <button class="logout-btn" id="logoutBtn">
             <i class="fas fa-sign-out-alt"></i>
             Выйти из аккаунта
         </button>
@@ -576,57 +612,154 @@
     </div>
 
     <script>
+        // Проверка авторизации
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        } else {
+            // Заполняем данные пользователя
+            if (currentUser.name && currentUser.name !== 'Гость') {
+                document.getElementById('userName').textContent = currentUser.name;
+            }
+            if (currentUser.email && currentUser.email !== 'guest@example.com') {
+                document.getElementById('userEmail').textContent = currentUser.email;
+            }
+            
+            // Если гость, показываем соответствующее сообщение
+            if (currentUser.isGuest) {
+                document.getElementById('userName').textContent = 'Гость';
+                document.getElementById('userEmail').textContent = 'Войдите для доступа ко всем функциям';
+                document.getElementById('userBadge').textContent = 'Гостевой режим';
+            }
+        }
+        
+        // Загрузка статистики
+        function updateProfileStats() {
+            // Заказы
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            document.getElementById('ordersCount').textContent = orders.length;
+            document.getElementById('newOrdersCount').textContent = orders.filter(order => order.status === 'новый').length + ' новых';
+            
+            // Избранное
+              const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            document.getElementById('favoritesCount').textContent = favorites.length;
+            
+            // Корзина
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalCartItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalCartItems;
+        }
+        
+        // Функция для добавления товара в просмотренные
+        function addToViewed(product) {
+            let viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+            
+            // Удаляем товар если он уже есть (чтобы обновить позицию)
+            viewed = viewed.filter(item => item.id !== product.id);
+            
+            // Добавляем товар в начало
+            viewed.unshift(product);
+            
+            // Ограничиваем количество до 6 последних
+            viewed = viewed.slice(0, 6);
+            
+            localStorage.setItem('viewedProducts', JSON.stringify(viewed));
+            loadViewedProducts();
+        }
+        
+        // Загрузка просмотренных товаров
+        function loadViewedProducts() {
+            const viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+            const container = document.getElementById('viewedProducts');
+            
+            if (viewed.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-viewed">
+                        <i class="fas fa-eye"></i>
+                        <h4>Пока нет просмотренных товаров</h4>
+                        <p>Товары, которые вы посмотрите, появятся здесь</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = viewed.map(product => `
+                <div class="viewed-product" onclick="viewProductAgain('${product.id}')">
+                    <div class="viewed-product-icon">
+                        <i class="${product.icon}"></i>
+                    </div>
+                    <div class="viewed-product-title">${product.name}</div>
+                    <div class="viewed-product-price">${product.price} ₽</div>
+                </div>
+            `).join('');
+        }
+        
+        // Просмотр товара снова
+        function viewProductAgain(productId) {
+            const viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+            const product = viewed.find(item => item.id === productId);
+            
+            if (product) {
+                showNotification(`Переход к товару: ${product.name}`);
+                // В будущем можно добавить переход на страницу товара
+                // window.location.href = `product.html?id=${productId}`;
+            }
+        }
+        
+        // Функция уведомлений
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #8b0000, #ff0000);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+                box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+        
         // Обработка кликов по меню
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
                 const menuText = this.querySelector('span').textContent;
-                
-                // Создаем красивое уведомление
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: linear-gradient(45deg, #8b0000, #ff0000);
-                    color: white;
-                    padding: 15px 20px;
-                    border-radius: 10px;
-                    z-index: 10000;
-                    animation: slideInRight 0.3s ease;
-                    box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
-                    font-weight: 500;
-                `;
-                notification.textContent = `Открыт раздел: ${menuText}`;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.style.animation = 'slideOutRight 0.3s ease forwards';
-                    setTimeout(() => notification.remove(), 300);
-                }, 2000);
+                showNotification(`Открыт раздел: ${menuText}`);
             });
         });
         
         // Выход из аккаунта
-        document.querySelector('.logout-btn').addEventListener('click', function() {
+        document.getElementById('logoutBtn').addEventListener('click', function() {
             if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
-                alert('Вы вышли из аккаунта. В реальном приложении здесь был бы выход из системы.');
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
             }
         });
         
-        // Добавляем стили для анимации уведомлений
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOutRight {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProfileStats();
+            loadViewedProducts();
+            
+            // Анимация появления элементов
+            const elements = document.querySelectorAll('.viewed-product');
+            elements.forEach((element, index) => {
+                element.style.animation = `fadeInUp 0.6s ease ${index * 0.1}s both`;
+            });
+        });
     </script>
 </body>
 </html>
