@@ -516,11 +516,11 @@
         <a href="cart.html" class="nav-btn">
             <i class="fas fa-shopping-cart"></i>
             <span>Корзина</span>
-        </a>
-        <a href="profile.html" class="nav-btn">
-            <i class="fas fa-user"></i>
-            <span>Профиль</span>
-        </a>
+            </a>
+        <a href="login.html" class="nav-btn">
+    <i class="fas fa-user"></i>
+    <span>Войти</span>
+</a>
     </div>
 
     <script>
@@ -612,5 +612,16 @@
         `;
         document.head.appendChild(style);
     </script>
+    <script>
+    // Отслеживание кликов по категориям
+  document.querySelectorAll('.category-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const categoryName = this.querySelector('.category-title').textContent;
+            
+            // Можно добавить логику для отслеживания просмотренных категорий
+            showNotification(`Просмотр категории: ${categoryName}`);
+        });
+    });
+</script>
 </body>
 </html>
