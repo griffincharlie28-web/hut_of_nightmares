@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное - Хижина Кошмаров</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0 15px;
+        }
+        
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 2px solid #8b0000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(139, 0, 0, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8b0000;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.7);
+        }
+        
+        .logo span {
+            color: #e0e0e0;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #e0e0e0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-btn:hover {
+            background: #8b0000;
+            transform: scale(1.1);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(139, 0, 0, 0.5);
+        }
+        
+        .page-header {
+            text-align: center;
+            padding: 25px 0 15px;
+            position: relative;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b0000, transparent);
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #8b0000, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
+        }
+        
+        .page-subtitle {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .favorites-stats {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b0000;
+            margin-bottom: 5px;
+        }
+        
+        .favorites-list {
+            margin-top: 20px;
+        }
+        
+        .favorite-item {
+            display: flex;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8));
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            align-items: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .favorite-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .favorite-item:hover::before {
+            left: 100%;
+        }
+        
+        .favorite-item:hover {
+            transform: translateY(-3px);
+            border-color: #8b0000;
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
+        }
+        
+        .favorite-img {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: #8b0000;
+            margin-right: 20px;
+            border: 2px solid rgba(139, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-item:hover .favorite-img {
+            transform: scale(1.1);
+            border-color: #8b0000;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+        
+        .favorite-info {
+            flex: 1;
+        }
+        
+        .favorite-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .favorite-price {
+            color: #8b0000;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .favorite-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            color: white;
+            flex: 2;
+        }
+        
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+        }
+        
+        .remove-favorite {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            flex: 1;
+        }
+        
+        .remove-favorite:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #333;
+            opacity: 0.5;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #888;
+        }
+        
+        .empty-state p {
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+        
+        .explore-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .explore-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.4);
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(139, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        
+        .nav-btn i {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn.active {
+            color: #8b0000;
+            background: rgba(139, 0, 0, 0.1);
+        }
+        
+        .nav-btn.active i {
+            transform: scale(1.2);
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .favorite-item {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">Хижина<span>Кошмаров</span></div>
+            <div class="header-icons">
+                <button class="icon-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Избранное</h1>
+            <p class="page-subtitle">Ваши любимые товары</p>
+        </div>
+        
+        <div class="favorites-stats">
+            <div class="stats-number">8 товаров</div>
+            <div>в избранном</div>
+        </div>
+        
+        <div class="favorites-list" id="favorites-list">
+            <div class="favorite-item">
+                <div class="favorite-img">
+                    <i class="fas fa-ghost"></i>
+                </div>
+                <div class="favorite-info">
+                    <h3 class="favorite-title">Брелок "Призрак"</h3>
+                    <div class="favorite-price">450 ₽</div>
+                    <div class="favorite-actions">
+                        <button class="action-btn buy-btn">Купить сейчас</button>
+                        <button class="action-btn remove-favorite">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-img">
+                    <i class="fas fa-skull"></i>
+                </div>
+                <div class="favorite-info">
+                    <h3 class="favorite-title">Кольцо "Череп"</h3>
+                    <div class="favorite-price">890 ₽</div>
+                    <div class="favorite-actions">
+                        <button class="action-btn buy-btn">Купить сейчас</button>
+                        <button class="action-btn remove-favorite">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-img">
+                    <i class="fas fa-mask"></i>
+                </div>
+                <div class="favorite-info">
+                    <h3 class="favorite-title">Маска Фредди Крюгера</h3>
+                    <div class="favorite-price">1350 ₽</div>
+                    <div class="favorite-actions">
+                        <button class="action-btn buy-btn">Купить сейчас</button>
+                        <button class="action-btn remove-favorite">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="favorite-item">
+                <div class="favorite-img">
+                    <i class="fas fa-book-dead"></i>
+                </div>
+                <div class="favorite-info">
+                    <h3 class="favorite-title">Некрономикон</h3>
+                    <div class="favorite-price">1500 ₽</div>
+                    <div class="favorite-actions">
+                        <button class="action-btn buy-btn">Купить сейчас</button>
+                        <button class="action-btn remove-favorite">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Главная</span>
+        </a>
+        <a href="categories.html" class="nav-btn">
+            <i class="fas fa-th-large"></i>
+            <span>Категории</span>
+        </a>
+        <a href="favorites.html" class="nav-btn active">
+            <i class="fas fa-heart"></i>
+            <span>Избранное</span>
+        </a>
+        <a href="cart.html" class="nav-btn">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Корзина</span>
+        </a>
+        <a href="profile.html" class="nav-btn">
+            <i class="fas fa-user"></i>
+            <span>Профиль</span>
+        </a>
+    </div>
+
+    <script>
+        // Удаление из избранного с анимацией
+        document.querySelectorAll('.remove-favorite').forEach(button => {
+            button.addEventListener('click', function() {
+                const item = this.closest('.favorite-item');
+                item.style.transform = 'translateX(100%)';
+                item.style.opacity = '0';
+                
+                setTimeout(() => {
+                    item.remove();
+                    updateFavoritesCount();
+                    
+                    // Проверить остались ли товары
+                    if (document.querySelectorAll('.favorite-item').length === 0) {
+                        document.getElementById('favorites-list').innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-heart-broken"></i>
+                                <h3>В избранном пусто</h3>
+                                <p>Добавляйте товары в избранное, чтобы не потерять</p>
+                                <a href="categories.html" class="explore-btn">Найти товары</a>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            });
+        });
+        
+        // Купить сейчас
+        document.querySelectorAll('.buy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const productName = this.closest('.favorite-item').querySelector('.favorite-title').textContent;
+                alert(`Товар "${productName}" добавлен в корзину!`);
+            });
+        });
+        
+        function updateFavoritesCount() {
+            const count = document.querySelectorAll('.favorite-item').length;
+            document.querySelector('.stats-number').textContent = count + ' товаров';
+        }
+        
+        // Анимация появления элементов
+        document.addEventListener('DOMContentLoaded', function() {
+            const items = document.querySelectorAll('.favorite-item');
+            items.forEach((item, index) => {
+                item.style.animationDelay = (index * 0.1) + 's';
+            });
+        });
+    </script>
+</body>
+</html>
