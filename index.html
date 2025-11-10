@@ -532,10 +532,10 @@
             <i class="fas fa-shopping-cart"></i>
             <span>Корзина</span>
         </a>
-        <a href="profile.html" class="nav-btn">
-            <i class="fas fa-user"></i>
-            <span>Профиль</span>
-        </a>
+<a href="login.html" class="nav-btn">
+    <i class="fas fa-user"></i>
+    <span>Войти</span>
+</a>
     </div>
 
     <script>
@@ -610,5 +610,185 @@
         `;
         document.head.appendChild(style);
     </script>
+    <script>
+    // Функция добавления в корзину
+      function addToCart(productId, productName, productPrice, productIcon) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({
+                id: productId,
+                name: productName,
+                price: parseInt(productPrice),
+                quantity: 1,
+                icon: productIcon
+            });
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        showNotification(`Товар "${productName}" добавлен в корзину!`);
+    }
+    
+    // Функция добавления в избранное
+    function addToFavorites(productId, productName, productPrice, productIcon) {
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        
+        if (!favorites.find(item => item.id === productId)) {
+            favorites.push({
+                id: productId,
+                name: productName,
+                price: parseInt(productPrice),
+                icon: productIcon
+            });
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            showNotification(`Товар "${productName}" добавлен в избранное!`);
+        } else {
+            showNotification(`Товар "${productName}" уже в избранном!`);
+        }
+    }
+    
+    // Обновляем кнопки на главной
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const productId = productCard.querySelector('.product-title').textContent;
+                const productName = productCard.querySelector('.product-title').textContent;
+                const productPrice = productCard.querySelector('.product-price').textContent;
+                const productIcon = productCard.querySelector('.product-img i').className;
+                
+                addToCart(productId, productName, productPrice, productIcon);
+            });
+        });
+    });
+</script>
+<script>
+    // Улучшенная функция добавления в корзину
+    function addToCart(productName, productPrice, productIcon) {
+        // Создаем ID товара из названия
+        const productId = productName.replace(/\s+/g, '-').toLowerCase();
+        
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({
+                id: productId,
+                name: productName,
+                price: parseInt(productPrice),
+                quantity: 1,
+                icon: productIcon
+            });
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        showNotification(`Товар "${productName}" добавлен в корзину!`);
+        
+        // Анимация кнопки
+        const button = event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Добавлено';
+        button.style.background = 'linear-gradient(45deg, #00b300, #00ff00)';
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = '';
+        }, 2000);
+    }
+    
+    // Функция уведомлений
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            z-index: 10000;
+            animation: slideInRight 0.3s ease;
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+            font-weight: 500;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease forwards';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    // Обработчики для кнопок "В корзину"
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const productCard = this.closest('.product-card');
+            const productName = productCard.querySelector('.product-title').textContent;
+            const productPrice = productCard.querySelector('.product-price').textContent.replace(' ₽', '');
+            const productIcon = productCard.querySelector('.product-img i').className;
+            
+            addToCart(productName, productPrice, productIcon);
+        });
+    });
+    
+    // Добавляем стили для анимации
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+<script>
+    // Отслеживание кликов по товарам на главной
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Не отслеживаем клики по кнопке "В корзину"
+                if (e.target.classList.contains('add-to-cart')) return;
+                
+                const productName = this.querySelector('.product-title').textContent;
+                const productPrice = this.querySelector('.product-price').textContent.replace(' ₽', '');
+                const productIcon = this.querySelector('.product-img i').className;
+                const productId = productName.replace(/\s+/g, '-').toLowerCase();
+                
+                const product = {
+                    id: productId,
+                    name: productName,
+                    price: parseInt(productPrice),
+                    icon: productIcon,
+                    viewedAt: new Date().toLocaleString('ru-RU')
+                };
+                
+                // Сохраняем в просмотренные
+                if (typeof addToViewed === 'function') {
+                    addToViewed(product);
+                } else {
+                    // Если функция еще не определена (на другой странице)
+                    let viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+                    viewed = viewed.filter(item => item.id !== product.id);
+                    viewed.unshift(product);
+                    viewed = viewed.slice(0, 6);
+                    localStorage.setItem('viewedProducts', JSON.stringify(viewed));
+                }
+                
+                showNotification(`Товар "${productName}" добавлен в просмотренные`);
+            });
+        });
+    });
+</script>
 </body>
 </html>
