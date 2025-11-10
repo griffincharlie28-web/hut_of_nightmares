@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категории - Хижина Кошмаров</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0 15px;
+        }
+        
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 2px solid #8b0000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(139, 0, 0, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8b0000;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.7);
+        }
+        
+        .logo span {
+            color: #e0e0e0;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #e0e0e0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-btn:hover {
+            background: #8b0000;
+            transform: scale(1.1);
+        }
+        
+        .page-header {
+            text-align: center;
+            padding: 25px 0 15px;
+            position: relative;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b0000, transparent);
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #8b0000, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
+        }
+        
+        .page-subtitle {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .search-section {
+            margin: 20px 0;
+        }
+        
+        .search-box {
+            position: relative;
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 25px;
+            padding: 12px 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus-within {
+            border-color: #8b0000;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+        }
+        
+        .search-input {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            width: 100%;
+            font-size: 1rem;
+            outline: none;
+            padding-left: 35px;
+        }
+        
+        .search-input::placeholder {
+            color: #888;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8b0000;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding: 5px 0;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .filter-section::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .filter-btn {
+            white-space: nowrap;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8));
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 20px;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            border-color: #8b0000;
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+        }
+        
+        .filter-btn:hover:not(.active) {
+            border-color: #8b0000;
+            transform: translateY(-2px);
+        }
+        
+        .categories-stats {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b0000;
+            margin-bottom: 5px;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 20px;
+        }
+        
+        .category-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8));
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .category-card:hover::before {
+            left: 100%;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-8px);
+            border-color: #8b0000;
+            box-shadow: 0 10px 30px rgba(139, 0, 0, 0.3);
+        }
+        
+        .category-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2rem;
+            color: #8b0000;
+            margin: 0 auto 15px;
+            border: 2px solid rgba(139, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover .category-icon {
+            transform: scale(1.1);
+            border-color: #8b0000;
+            box-shadow: 0 0 25px rgba(139, 0, 0, 0.5);
+            color: #ff0000;
+        }
+        
+        .category-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .category-count {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
+        }
+        
+        .featured-categories {
+            margin-top: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #8b0000, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
+            padding-left: 10px;
+            border-left: 3px solid #8b0000;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(139, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        
+        .nav-btn i {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn.active {
+            color: #8b0000;
+            background: rgba(139, 0, 0, 0.1);
+        }
+        
+        .nav-btn.active i {
+            transform: scale(1.2);
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .category-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Хижина<span>Кошмаров</span></div>
+                <div class="header-icons">
+                    <button class="icon-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Все категории</h1>
+            <p class="page-subtitle">Выберите интересующую категорию</p>
+        </div>
+        
+        <!-- Поиск -->
+        <div class="search-section">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Поиск по категориям...">
+            </div>
+        </div>
+        
+        <!-- Фильтры -->
+        <div class="filter-section">
+            <button class="filter-btn active">Все</button>
+            <button class="filter-btn">Популярные</button>
+            <button class="filter-btn">Новые</button>
+            <button class="filter-btn">Со скидкой</button>
+            <button class="filter-btn">В наличии</button>
+        </div>
+        
+        <div class="categories-stats">
+            <div class="stats-number">8 категорий</div>
+            <div>Более 120 товаров</div>
+        </div>
+        
+        <!-- Основные категории -->
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-badge">Популярное</div>
+                <div class="category-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h3 class="category-title">Брелки</h3>
+                <div class="category-count">24 товара</div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-badge">Новинка</div>
+                <div class="category-icon">
+                    <i class="fas fa-ring"></i>
+                </div>
+                <h3 class="category-title">Аксессуары</h3>
+                <div class="category-count">18 товаров</div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-badge">Хит</div>
+                <div class="category-icon">
+                    <i class="fas fa-ghost"></i>
+                </div>
+                <h3 class="category-title">Фигурки</h3>
+                <div class="category-count">32 товара</div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <h3 class="category-title">Постеры</h3>
+                <div class="category-count">15 товаров</div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-badge">Скидка</div>
+                <div class="category-icon">
+                    <i class="fas fa-mask"></i>
+                </div>
+                <h3 class="category-title">Маски</h3>
+                <div class="category-count">12 товаров</div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-tshirt"></i>
+                </div>
+                <h3 class="category-title">Одежда</h3>
+                <div class="category-count">20 товаров</div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-book-skull"></i>
+                </div>
+                <h3 class="category-title">Книги</h3>
+                <div class="category-count">8 товаров</div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-badge">Новинка</div>
+                <div class="category-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3 class="category-title">Декор</h3>
+                <div class="category-count">14 товаров</div>
+            </div>
+        </div>
+        
+        <!-- Избранные категории -->
+        <div class="featured-categories">
+            <h3 class="section-title">Рекомендуемые</h3>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-badge">-30%</div>
+                    <div class="category-icon">
+                        <i class="fas fa-hat-wizard"></i>
+                    </div>
+                    <h3 class="category-title">Хэллоуин</h3>
+                    <div class="category-count">28 товаров</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-badge">Хит</div>
+                    <div class="category-icon">
+                        <i class="fas fa-hand-fist"></i>
+                    </div>
+                    <h3 class="category-title">Культовые злодеи</h3>
+                    <div class="category-count">16 товаров</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>Главная</span>
+        </a>
+        <a href="categories.html" class="nav-btn active">
+            <i class="fas fa-th-large"></i>
+            <span>Категории</span>
+        </a>
+        <a href="favorites.html" class="nav-btn">
+            <i class="fas fa-heart"></i>
+            <span>Избранное</span>
+        </a>
+        <a href="cart.html" class="nav-btn">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Корзина</span>
+        </a>
+        <a href="profile.html" class="nav-btn">
+            <i class="fas fa-user"></i>
+            <span>Профиль</span>
+        </a>
+    </div>
+
+    <script>
+        // Переключение фильтров
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Анимация нажатия
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // Клик по категории
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const categoryName = this.querySelector('.category-title').textContent;
+                
+                // Анимация клика
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+                
+                // Уведомление
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(45deg, #8b0000, #ff0000);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    z-index: 10000;
+                    animation: slideInRight 0.3s ease;
+                    box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+                    font-weight: 500;
+                `;
+                notification.textContent = `Переход в категорию: ${categoryName}`;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOutRight 0.3s ease forwards';
+                    setTimeout(() => notification.remove(), 300);
+                }, 2000);
+            });
+        });
+        
+        // Анимация появления категорий
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.category-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.1) + 's';
+            });
+        });
+        
+        // Поиск
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const categories = document.querySelectorAll('.category-card');
+            
+            categories.forEach(category => {
+                const title = category.querySelector('.category-title').textContent.toLowerCase();
+                if (title.includes(searchTerm) || searchTerm === '') {
+                    category.style.display = 'block';
+                } else {
+                    category.style.display = 'none';
+                }
+            });
+        });
+        
+        // Добавляем стили для анимации уведомлений
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
