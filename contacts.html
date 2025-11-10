@@ -476,5 +476,42 @@
             alert('📞 Спасибо за звонок! Если не дозвонились - напишите в мессенджер.');
         });
     </script>
+    <script>
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length === 0) {
+            alert('Корзина пуста!');
+            return;
+        }
+        
+        const formData = new FormData(this);
+        const order = {
+            id: Date.now(),
+            date: new Date().toLocaleString('ru-RU'),
+            items: cart,
+            customer: {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                address: formData.get('address')
+            },
+            total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + 300,
+            status: 'новый'
+        };
+        
+        // Сохраняем заказ
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
+        
+        // Очищаем корзину
+        localStorage.removeItem('cart');
+        
+        alert('Заказ оформлен! Номер заказа: ' + order.id);
+        window.location.href = 'index.html';
+    });
+</script>
 </body>
 </html>
