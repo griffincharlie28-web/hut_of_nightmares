@@ -371,10 +371,10 @@
             <p class="page-subtitle">Ваши любимые товары</p>
         </div>
         
-        <div class="favorites-stats">
-            <div class="stats-number">8 товаров</div>
-            <div>в избранном</div>
-        </div>
+<div class="favorites-stats">
+    <div class="stats-number" id="favoritesCount">0 товаров</div>
+    <div>в избранном</div>
+</div>
         
         <div class="favorites-list" id="favorites-list">
             <div class="favorite-item">
@@ -460,10 +460,10 @@
             <i class="fas fa-shopping-cart"></i>
             <span>Корзина</span>
         </a>
-        <a href="profile.html" class="nav-btn">
-            <i class="fas fa-user"></i>
-            <span>Профиль</span>
-        </a>
+<a href="login.html" class="nav-btn">
+    <i class="fas fa-user"></i>
+    <span>Войти</span>
+</a>
     </div>
 
     <script>
@@ -514,5 +514,86 @@
             });
         });
     </script>
+    <script>
+    // Обновление счетчика избранного
+    function updateFavoritesCount() {
+        const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const countElement = document.getElementById('favoritesCount');
+        countElement.textContent = favorites.length + ' товаров';
+        
+        // Показываем пустое состояние если нет товаров
+        const favoritesList = document.getElementById('favorites-list');
+        if (favorites.length === 0) {
+            favoritesList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-heart-broken"></i>
+                    <h3>В избранном пусто</h3>
+                    <p>Добавляйте товары в избранное, чтобы не потерять</p>
+                    <a href="categories.html" class="explore-btn">Найти товары</a>
+                </div>
+            `;
+        }
+    }
+    
+    // Загружаем избранные товары
+    function loadFavorites() {
+        const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const favoritesList = document.getElementById('favorites-list');
+        
+        if (favorites.length === 0) {
+            updateFavoritesCount();
+            return;
+        }
+        
+        // Очищаем список
+        favoritesList.innerHTML = '';
+        
+        // Добавляем товары
+        favorites.forEach(item => {
+            const favoriteItem = document.createElement('div');
+            favoriteItem.className = 'favorite-item';
+            favoriteItem.innerHTML = `
+                <div class="favorite-img">
+                    <i class="${item.icon || 'fas fa-ghost'}"></i>
+                </div>
+                <div class="favorite-info">
+                    <h3 class="favorite-title">${item.name}</h3>
+                    <div class="favorite-price">${item.price} ₽</div>
+                    <div class="favorite-actions">
+                        <button class="action-btn buy-btn" onclick="addToCartFromFavorites('${item.id}')">Купить сейчас</button>
+                        <button class="action-btn remove-favorite" onclick="removeFromFavorites('${item.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            favoritesList.appendChild(favoriteItem);
+        });
+        
+        updateFavoritesCount();
+    }
+    
+    // Удаление из избранного
+    function removeFromFavorites(productId) {
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        favorites = favorites.filter(item => item.id !== productId);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        loadFavorites();
+    }
+    
+    // Добавление в корзину из избранного
+    function addToCartFromFavorites(productId) {
+        const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const product = favorites.find(item => item.id === productId);
+        
+        if (product) {
+            addToCart(product.id, product.name, product.price);
+            alert(`Товар "${product.name}" добавлен в корзину!`);
+        }
+    }
+    
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', loadFavorites);
+</script>
 </body>
 </html>
