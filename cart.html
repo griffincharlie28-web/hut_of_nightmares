@@ -131,6 +131,9 @@
             background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
             border: 1px solid rgba(139, 0, 0, 0.3);
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .cart-product-image {
@@ -140,11 +143,6 @@
         }
         
         .cart-fallback-icon {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 1.5rem;
             color: #8b0000;
         }
@@ -253,8 +251,7 @@
             margin-bottom: 15px;
             font-size: 1.1rem;
         }
-        
-        .total-amount {
+                .total-amount {
             font-size: 1.5rem;
             font-weight: bold;
             color: #8b0000;
@@ -673,200 +670,15 @@
             cartTotalSection.style.display = 'block';
             emptyState.style.display = 'none';
             
-          // Обновляем товары в корзине
-            container.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                -image">
-                        ${item.image ? 
-                            `<img src="${item.image}" alt="${item.name}" class="cart-product-image" 
-                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                             <div class="cart-fallback-icon" style="display: none;">
-                                 <i class="${item.icon || 'fas fa-box'}"></i>
-                             </div>` :
-                            `<div class="cart-fallback-icon">
-                                 <i class="${item.icon || 'fas fa-box'}"></i>
-                             </div>`
-                        }
-                    </div>
-                    <div class="cart-item-info">
-                        <h4 class="cart-item-title">${item.name}</h4>
-                        <div class="cart-item-price">${item.price} ₽</div>
-                        <div class="cart-item-category">${item.category || 'Товар'}</div>
-                    </div>
-                    <div class="cart-item-controls">
-                        <div class="quantity-controls">
-                            <button class="quantity-btn" onclick="decreaseQuantity(${item.id})">-</button>
-                            <span class="quantity">${item.quantity}</span>
-                            <button class="quantity-btn" onclick="increaseQuantity(${item.id})">+</button>
-                        </div>
-                        <button class="remove-btn" onclick="removeFromCart(${item.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    <div class="cart-item-total">${item.price * item.quantity} ₽</div>
-                </div>
-            `).join('');
-            
-            // Обновляем итоговую сумму
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            cartTotal.textContent = `${total} ₽`;
-            
-            updateCartCounter();
-        }
-        
-        // Функция для правильного склонения
-        function getPlural(number) {
-            if (number % 10 === 1 && number % 100 !== 11) return '';
-            if (number % 10 >= 2 && number % 10 <= 4 && (number % 100 < 10 || number % 100 >= 20)) return 'а';
-            return 'ов';
-        }
-        
-        // Функция увеличения количества
-        function increaseQuantity(productId) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const item = cart.find(item => item.id === productId);
-            
-            if (item) {
-                item.quantity += 1;
-                localStorage.setItem('cart', JSON.stringify(cart));
-                loadCart();
-                showNotification(`Количество "${item.name}" увеличено`);
-            }
-        }
-        
-        // Функция уменьшения количества
-        function decreaseQuantity(productId) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const itemIndex = cart.findIndex(item => item.id === productId);
-            
-            if (itemIndex > -1) {
-                if (cart[itemIndex].quantity > 1) {
-                    cart[itemIndex].quantity -= 1;
-                    showNotification(`Количество "${cart[itemIndex].name}" уменьшено`);
-                } else {
-                    // Если количество 1, удаляем товар
-                    const itemName = cart[itemIndex].name;
-                    cart.splice(itemIndex, 1);
-                    showNotification(`"${itemName}" удален из корзины`, 'info');
-                }
-                localStorage.setItem('cart', JSON.stringify(cart));
-                loadCart();
-            }
-        }
-        
-        // Функция удаления из корзины
-        function removeFromCart(productId) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const itemIndex = cart.findIndex(item => item.id === productId);
-            
-            if (itemIndex > -1) {
-                const itemName = cart[itemIndex].name;
-                cart.splice(itemIndex, 1);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                
-                showNotification(`"${itemName}" удален из корзины`, 'info');
-                loadCart();
-                updateCartCounter();
-            }
-        }
-        
-        // Функция оформления заказа
-        function checkout() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            if (cart.length === 0) {
-                showNotification('Корзина пуста!', 'error');
-                return;
-            }
-            
-            // Создаем заказ
-            const order = {
-                id: Date.now(),
-                date: new Date().toISOString(),
-                items: cart,
-                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-                status: 'pending'
-            };
-            
-            // Сохраняем заказ в историю
-            const orders = JSON.parse(localStorage.getItem('userOrders')) || [];
-            orders.push(order);
-            localStorage.setItem('userOrders', JSON.stringify(orders));
-            
-            // Очищаем корзину
-            localStorage.removeItem('cart');
-            
-            // Показываем модальное окно с контактами
-            showOrderSuccessModal();
-            
-            // Обновляем интерфейс
-            loadCart();
-            updateCartCounter();
-        }
-        
-        // Функция показа модального окна с контактами
-        function showOrderSuccessModal() {
-            const modal = document.getElementById('orderSuccessModal');
-            modal.style.display = 'block';
-        }
-        
-        // Функция закрытия модального окна
-        function closeModal() {
-            const modal = document.getElementById('orderSuccessModal');
-            modal.style.display = 'none';
-        }
-        
-        // Функция обновления счетчика корзины
-        function updateCartCounter() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const counter = document.querySelector('.cart-counter');
-            
-            if (counter) {
-                if (totalItems > 0) {
-                    counter.textContent = totalItems;
-                    counter.style.display = 'flex';
-                } else {
-                    counter.style.display = 'none';
-                }
-            }
-        }
-        
-        // Функция показа уведомлений
-        function showNotification(message, type = 'success') {
-            // Создаем элемент уведомления
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'error' ? '#8b0000' : '#2a2a2a'};
-                color: white;
-                padding: 15px 20px;
-                border-radius: 10px;
-                border: 1px solid #8b0000;
-                z-index: 3000;
-                max-width: 300px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-                animation: slideInRight 0.3s ease;
-            `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-          // Обновляем товары в корзине
+            // Обновляем товары в корзине
             container.innerHTML = cart.map(item => `
                 <div class="cart-item">
                     <div class="cart-item-image">
                         ${item.image ? 
-                            `<img src="${item.image}" alt="${item.name}" class="cart-product-image" 
-                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                             <div class="cart-fallback-icon" style="display: none;">
-                                 <i class="${item.icon || 'fas fa-box'}"></i>
-                             </div>` :
+                            `<img src="${item.image}" alt="${item.name}" class="cart-product-image">` :
                             `<div class="cart-fallback-icon">
-                                 <i class="${item.icon || 'fas fa-box'}"></i>
-                             </div>`
+                                <i class="${item.icon || 'fas fa-box'}"></i>
+                            </div>`
                         }
                     </div>
                     <div class="cart-item-info">
@@ -1029,7 +841,6 @@
                 z-index: 3000;
                 max-width: 300px;
                 box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-                animation: slideInRight 0.3s ease;
             `;
             notification.textContent = message;
             
@@ -1037,10 +848,7 @@
             
             // Удаляем уведомление через 3 секунды
             setTimeout(() => {
-                notification.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
+                notification.remove();
             }, 3000);
         }
         
