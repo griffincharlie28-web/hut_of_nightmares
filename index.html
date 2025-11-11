@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Хижина Кошмаров - Магазин ужасов</title>
+    <title>Хижина Кошмаров</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -39,7 +39,7 @@
         
         .header-content {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
         
@@ -54,28 +54,30 @@
             color: #e0e0e0;
         }
         
-        .header-icons {
-            display: flex;
-            gap: 15px;
+        .hero {
+            text-align: center;
+            padding: 40px 0 20px;
+            position: relative;
         }
         
-        .icon-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #e0e0e0;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b0000, transparent);
         }
         
-        .icon-btn:hover {
-            background: #8b0000;
-            transform: scale(1.1);
+        .hero-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #8b0000, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
         }
         
         .search-section {
@@ -119,131 +121,18 @@
             color: #8b0000;
         }
         
-        .mobile-nav {
-            display: flex;
-            overflow-x: auto;
-            padding: 15px 0;
-            margin: 10px 0;
-            gap: 12px;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
-        .mobile-nav::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .nav-item {
-            white-space: nowrap;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8));
-            border: 1px solid rgba(139, 0, 0, 0.2);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-        }
-        
-        .nav-item.active {
-            background: linear-gradient(45deg, #8b0000, #ff0000);
-            border-color: #8b0000;
-            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
-        }
-        
-        .nav-item:hover:not(.active) {
-            border-color: #8b0000;
-            transform: translateY(-2px);
-        }
-        
-        .banner {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
-            border: 1px solid rgba(139, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 30px 25px;
-            margin: 25px 0;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(139, 0, 0, 0.05), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-        
-        .banner h2 {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
-            background: linear-gradient(45deg, #8b0000, #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
-        }
-        
-        .banner p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: #ccc;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: linear-gradient(45deg, #8b0000, #ff0000);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.6);
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0 20px;
-        }
-        
         .section-title {
             font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
             background: linear-gradient(45deg, #8b0000, #ff6b6b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
         }
         
-        .view-all {
-            color: #8b0000;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .view-all:hover {
-            color: #ff0000;
-            transform: translateX(3px);
+        .popular-section {
+            margin: 30px 0;
         }
         
         .products-grid {
@@ -284,21 +173,53 @@
         }
         
         .product-img {
+            position: relative;
             width: 100%;
             height: 160px;
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 3rem;
-            color: #8b0000;
+            overflow: hidden;
             border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
             transition: all 0.3s ease;
         }
         
-        .product-card:hover .product-img {
+        .product-fallback-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #8b0000;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-card:hover .product-fallback-icon {
             color: #ff0000;
             transform: scale(1.05);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(45deg, #8b0000, #ff0000);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 5;
         }
         
         .product-info {
@@ -364,6 +285,7 @@
             transition: all 0.3s ease;
             padding: 5px 10px;
             border-radius: 15px;
+            position: relative;
         }
         
         .nav-btn i {
@@ -382,6 +304,22 @@
             text-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
         }
         
+        .cart-counter, .favorites-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #8b0000;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -390,6 +328,16 @@
         .product-card {
             animation: fadeInUp 0.6s ease forwards;
         }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -397,122 +345,88 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">Хижина<span>Кошмаров</span></div>
-                <div class="header-icons">
-                    <button class="icon-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
             </div>
         </div>
     </header>
     
     <div class="container">
-        <!-- Поиск -->
+        <section class="hero">
+            <h1 class="hero-title">Хижина Кошмаров</h1>
+        </section>
+        
         <div class="search-section">
             <div class="search-box">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Поиск товаров...">
+                <input type="text" class="search-input" placeholder="Поиск товаров..." id="searchInput">
             </div>
         </div>
         
-        <!-- Навигация по категориям -->
-        <div class="mobile-nav">
-            <div class="nav-item active">Все товары</div>
-            <div class="nav-item">Брелки</div>
-            <div class="nav-item">Аксессуары</div>
-            <div class="nav-item">Фигурки</div>
-            <div class="nav-item">Постеры</div>
-            <div class="nav-item">Маски</div>
-        </div>
-        
-        <!-- Баннер -->
-        <div class="banner">
-            <h2>Хэллоуинская распродажа!</h2>
-            <p>Скидки до 30% на все товары из категории ужасов</p>
-            <a href="#" class="btn">Смотреть акции</a>
-        </div>
-        
-        <!-- Популярные товары -->
-        <div class="section-header">
+        <section class="popular-section">
             <h2 class="section-title">Популярные товары</h2>
-            <a href="#" class="view-all">Все товары →</a>
-        </div>
-        
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fas fa-ghost"></i>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/brelok_ghost.webp" alt="Брелок Призрак" class="product-image" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-fallback-icon" style="display: none;">
+                            <i class="fas fa-ghost"></i>
+                        </div>
+                        <div class="product-badge">Хит</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Брелок "Призрак"</h3>
+                        <div class="product-price">300 ₽</div>
+                        <button class="add-to-cart" onclick="addToCartFromHome(1)">В корзину</button>
+                    </div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Брелок "Призрак" с подсветкой</h3>
-                    <div class="product-price">450 ₽</div>
-                    <button class="add-to-cart">В корзину</button>
+                
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/pin_freddy.webp" alt="Пин Фредди" class="product-image" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-fallback-icon" style="display: none;">
+                            <i class="fas fa-hat-wizard"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Пин Фредди</h3>
+                        <div class="product-price">150 ₽</div>
+                        <button class="add-to-cart" onclick="addToCartFromHome(11)">В корзину</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fas fa-skull"></i>
+                
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/brelok_ono.webp" alt="Брелок Оно" class="product-image" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-fallback-icon" style="display: none;">
+                            <i class="fas fa-skull"></i>
+                        </div>
+                        <div class="product-badge">Новинка</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Брелок "Оно"</h3>
+                        <div class="product-price">300 ₽</div>
+                        <button class="add-to-cart" onclick="addToCartFromHome(2)">В корзину</button>
+                    </div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Кольцо "Череп Вуду"</h3>
-                    <div class="product-price">890 ₽</div>
-                    <button class="add-to-cart">В корзину</button>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fas fa-mask"></i>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Маска Майкла Майерса</h3>
-                    <div class="product-price">1200 ₽</div>
-                    <button class="add-to-cart">В корзину</button>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fas fa-book-dead"></i>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Некрономикон с цепью</h3>
-                    <div class="product-price">1500 ₽</div>
-                    <button class="add-to-cart">В корзину</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Новинки -->
-        <div class="section-header">
-            <h2 class="section-title">Новые поступления</h2>
-            <a href="#" class="view-all">Все новинки →</a>
-        </div>
-        
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fas fa-hat-wizard"></i>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Брелок "Пеннивайз"</h3>
-                    <div class="product-price">550 ₽</div>
-                    <button class="add-to-cart">В корзину</button>
+                
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/pin_mayers.webp" alt="Пин Майерс" class="product-image" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="product-fallback-icon" style="display: none;">
+                            <i class="fas fa-mask"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Пин Майерс</h3>
+                        <div class="product-price">150 ₽</div>
+                        <button class="add-to-cart" onclick="addToCartFromHome(12)">В корзину</button>
+                    </div>
                 </div>
             </div>
-            
-            <div class="product-card">
-                <div class="product-img">
-                    <i class="fas fa-hand-sparkles"></i>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Кулон "Крик" светящийся</h3>
-                    <div class="product-price">780 ₽</div>
-                    <button class="add-to-cart">В корзину</button>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
     
     <div class="bottom-nav">
@@ -532,263 +446,140 @@
             <i class="fas fa-shopping-cart"></i>
             <span>Корзина</span>
         </a>
-<a href="login.html" class="nav-btn">
-    <i class="fas fa-user"></i>
-    <span>Войти</span>
-</a>
+        <a href="login.html" class="nav-btn">
+            <i class="fas fa-user"></i>
+            <span>Войти</span>
+        </a>
     </div>
 
     <script>
-        // Добавление в корзину
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
-                const productTitle = this.parentElement.querySelector('.product-title').textContent;
-                
-                // Анимация кнопки
-                this.innerHTML = '<i class="fas fa-check"></i> Добавлено';
-                this.style.background = 'linear-gradient(45deg, #00b300, #00ff00)';
-                this.style.borderColor = '#00b300';
-                
-                setTimeout(() => {
-                    this.innerHTML = 'В корзину';
-                    this.style.background = 'linear-gradient(135deg, #333, #222)';
-                    this.style.borderColor = 'rgba(139, 0, 0, 0.3)';
-                }, 2000);
-                
-                // Уведомление
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: linear-gradient(45deg, #8b0000, #ff0000);
-                    color: white;
-                    padding: 15px 20px;
-                    border-radius: 10px;
-                    z-index: 10000;
-                    animation: slideInRight 0.3s ease;
-                    box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
-                    font-weight: 500;
-                `;
-                notification.textContent = `Товар "${productTitle}" добавлен в корзину!`;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.style.animation = 'slideOutRight 0.3s ease forwards';
-                    setTimeout(() => notification.remove(), 300);
-                }, 3000);
-            });
-        });
-        
-        // Переключение категорий
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-        
-        // Анимация появления товаров
-        document.addEventListener('DOMContentLoaded', function() {
-            const items = document.querySelectorAll('.product-card');
-            items.forEach((item, index) => {
-                item.style.animationDelay = (index * 0.1) + 's';
-            });
-        });
-        
-        // Добавляем стили для анимации уведомлений
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOutRight {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
-    <script>
-    // Функция добавления в корзину
-      function addToCart(productId, productName, productPrice, productIcon) {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingItem = cart.find(item => item.id === productId);
-        
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({
-                id: productId,
-                name: productName,
-                price: parseInt(productPrice),
-                quantity: 1,
-                icon: productIcon
-            });
-        }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        showNotification(`Товар "${productName}" добавлен в корзину!`);
-    }
-    
-    // Функция добавления в избранное
-    function addToFavorites(productId, productName, productPrice, productIcon) {
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        
-        if (!favorites.find(item => item.id === productId)) {
-            favorites.push({
-                id: productId,
-                name: productName,
-                price: parseInt(productPrice),
-                icon: productIcon
-            });
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            showNotification(`Товар "${productName}" добавлен в избранное!`);
-        } else {
-            showNotification(`Товар "${productName}" уже в избранном!`);
-        }
-    }
-    
-    // Обновляем кнопки на главной
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const productId = productCard.querySelector('.product-title').textContent;
-                const productName = productCard.querySelector('.product-title').textContent;
-                const productPrice = productCard.querySelector('.product-price').textContent;
-                const productIcon = productCard.querySelector('.product-img i').className;
-                
-                addToCart(productId, productName, productPrice, productIcon);
-            });
-        });
-    });
-</script>
-<script>
-    // Улучшенная функция добавления в корзину
-    function addToCart(productName, productPrice, productIcon) {
-        // Создаем ID товара из названия
-        const productId = productName.replace(/\s+/g, '-').toLowerCase();
-        
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingItem = cart.find(item => item.id === productId);
-        
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({
-                id: productId,
-                name: productName,
-                price: parseInt(productPrice),
-                quantity: 1,
-                icon: productIcon
-            });
-        }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        showNotification(`Товар "${productName}" добавлен в корзину!`);
-        
-        // Анимация кнопки
-        const button = event.target;
-        const originalText = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-check"></i> Добавлено';
-        button.style.background = 'linear-gradient(45deg, #00b300, #00ff00)';
-        
-        setTimeout(() => {
-            button.innerHTML = originalText;
-            button.style.background = '';
-        }, 2000);
-    }
-    
-    // Функция уведомлений
-    function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #8b0000, #ff0000);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            z-index: 10000;
-            animation: slideInRight 0.3s ease;
-            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
-            font-weight: 500;
-        `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease forwards';
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
-    }
-    
-    // Обработчики для кнопок "В корзину"
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function() {
-            const productCard = this.closest('.product-card');
-            const productName = productCard.querySelector('.product-title').textContent;
-            const productPrice = productCard.querySelector('.product-price').textContent.replace(' ₽', '');
-            const productIcon = productCard.querySelector('.product-img i').className;
+        const homeProducts = [
+            { id: 1, name: 'Брелок "Призрак"', price: 300, image: 'images/brelok_ghost.webp', icon: 'fas fa-ghost' },
+            { id: 11, name: 'Пин Фредди', price: 150, image: 'images/pin_freddy.webp', icon: 'fas fa-hat-wizard' },
+            { id: 2, name: 'Брелок "Оно"', price: 300, image: 'images/brelok_ono.webp', icon: 'fas fa-skull' },
+            { id: 12, name: 'Пин Майерс', price: 150, image: 'images/pin_mayers.webp', icon: 'fas fa-mask' }
+        ];
+
+        function addToCartFromHome(productId) {
+            const product = homeProducts.find(p => p.id === productId);
             
-            addToCart(productName, productPrice, productIcon);
-        });
-    });
-    
-    // Добавляем стили для анимации
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            if (!product) {
+                showNotification('Товар не найден!', 'error');
+                return;
+            }
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    image: product.image,
+                    icon: product.icon,
+                    category: 'Популярные'
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            showNotification(`"${product.name}" добавлен в корзину!`);
+            updateCartCounter();
+
+            const button = event.target;
+            const originalText = button.innerHTML;
+            const originalBackground = button.style.background;
+            
+            button.innerHTML = '<i class="fas fa-check"></i> Добавлено';
+            button.style.background = 'linear-gradient(45deg, #00b300, #008000)';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = originalBackground;
+                button.disabled = false;
+            }, 2000);
         }
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
+
+        function handleSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (searchTerm.length > 0) {
+                window.location.href = `categories.html?search=${encodeURIComponent(searchTerm)}`;
+            }
         }
-    `;
-    document.head.appendChild(style);
-</script>
-<script>
-    // Отслеживание кликов по товарам на главной
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                // Не отслеживаем клики по кнопке "В корзину"
-                if (e.target.classList.contains('add-to-cart')) return;
-                
-                const productName = this.querySelector('.product-title').textContent;
-                const productPrice = this.querySelector('.product-price').textContent.replace(' ₽', '');
-                const productIcon = this.querySelector('.product-img i').className;
-                const productId = productName.replace(/\s+/g, '-').toLowerCase();
-                
-                const product = {
-                    id: productId,
-                    name: productName,
-                    price: parseInt(productPrice),
-                    icon: productIcon,
-                    viewedAt: new Date().toLocaleString('ru-RU')
-                };
-                
-                // Сохраняем в просмотренные
-                if (typeof addToViewed === 'function') {
-                    addToViewed(product);
-                } else {
-                    // Если функция еще не определена (на другой странице)
-                    let viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
-                    viewed = viewed.filter(item => item.id !== product.id);
-                    viewed.unshift(product);
-                    viewed = viewed.slice(0, 6);
-                    localStorage.setItem('viewedProducts', JSON.stringify(viewed));
+
+        function updateCounters() {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            const favBtn = document.querySelector('.nav-btn[href="favorites.html"]');
+            let favCounter = favBtn.querySelector('.favorites-counter');
+            if (favorites.length > 0) {
+                if (!favCounter) {
+                    favCounter = document.createElement('span');
+                    favCounter.className = 'favorites-counter';
+                    favBtn.appendChild(favCounter);
                 }
-                
-                showNotification(`Товар "${productName}" добавлен в просмотренные`);
+                favCounter.textContent = favorites.length > 99 ? '99+' : favorites.length;
+            } else if (favCounter) {
+                favCounter.remove();
+            }
+            
+            const cartBtn = document.querySelector('.nav-btn[href="cart.html"]');
+            let cartCounter = cartBtn.querySelector('.cart-counter');
+            if (totalItems > 0) {
+                if (!cartCounter) {
+                    cartCounter = document.createElement('span');
+                    cartCounter.className = 'cart-counter';
+                    cartBtn.appendChild(cartCounter);
+                }
+                cartCounter.textContent = totalItems > 99 ? '99+' : totalItems;
+            } else if (cartCounter) {
+                cartCounter.remove();
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'linear-gradient(45deg, #8b0000, #ff0000)' : 
+                             'linear-gradient(45deg, #cc0000, #990000)'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                z-index: 3000;
+                animation: slideInRight 0.3s ease;
+                box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+                font-weight: 500;
+                min-width: 300px;
+                text-align: center;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounters();
+            
+  document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                 }
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
